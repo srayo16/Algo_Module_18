@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int parent[1000];
+int parentLevel[1000];
 
 void dsu_set(int n)
 {
@@ -8,6 +9,7 @@ void dsu_set(int n)
     for (int i = 0; i <= n; i++)
     {
         parent[i] = -1;
+        parentLevel[i] = 0;
     }
 }
 
@@ -29,7 +31,19 @@ void dsu_union(int a, int b)
 
     if (leaderA != leaderB)
     {
-        parent[leaderB] = leaderA;
+        if (parentLevel[leaderA] > parentLevel[leaderB])
+        {
+            parent[leaderB] = leaderA;
+        }
+        else if (parentLevel[leaderA] < parentLevel[leaderB])
+        {
+            parent[leaderA] = leaderB;
+        }
+        else
+        {
+            parent[leaderB] = leaderA;
+            parentLevel[leaderA]++;
+        }
     }
 }
 
@@ -45,6 +59,8 @@ int main()
         cin >> u >> v;
         dsu_union(u, v);
     }
+
+    cout << dsu_find(3);
 
     return 0;
 }
